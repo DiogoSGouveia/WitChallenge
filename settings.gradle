@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'WitChallenge'
-include('rest', 'calculator')
+include('rest', 'calculator', 'shared')

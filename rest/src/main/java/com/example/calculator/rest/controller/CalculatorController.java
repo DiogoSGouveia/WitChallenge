@@ -1,16 +1,32 @@
-package com.example.calculator.controller;
+package com.example.calculator.rest.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.calculator.rest.service.CalculatorService;
+import com.example.calculator.shared.dto.CalculationRequest;
+import com.example.calculator.shared.dto.CalculationResponse;
+
+import java.math.BigDecimal;
+
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/calculator")
 public class CalculatorController {
 
-    @GetMapping("/ping")
-    public String ping() {
-        return "Calculator REST Service is running!";
+    private final CalculatorService calculatorService;
+
+    public CalculatorController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
     }
+
+    @GetMapping("/{operation}")
+    public CalculationResponse calculate(
+            @PathVariable String operation,
+            @RequestParam("a") BigDecimal a,
+            @RequestParam("b") BigDecimal b) {
+        CalculationRequest request = new CalculationRequest(operation, a, b);
+        return calculatorService.calculate(request);
+    }
+
 
 }
