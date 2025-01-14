@@ -6,7 +6,7 @@ public class CalculationRequest {
     private String operation;
     private BigDecimal a; 
     private BigDecimal b;
-
+    private String correlationId;
 
     public CalculationRequest() {}
 
@@ -15,7 +15,6 @@ public class CalculationRequest {
         this.a = a;
         this.b = b;
     }
-
 
     public String getOperation() {
         return operation;
@@ -27,7 +26,6 @@ public class CalculationRequest {
         return b;
     }
 
-
     public void setOperation(String operation) {
         this.operation = operation;
     }
@@ -36,5 +34,13 @@ public class CalculationRequest {
     }
     public void setB(BigDecimal b) {
         this.b = b;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 } 
