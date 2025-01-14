@@ -19,9 +19,10 @@ public class CalculatorService {
         this.kafkaTemplate = kafkaTemplate;
     }
     
-    @KafkaListener(topics = "calculator-topic", groupId = "calculator-group")
+    @KafkaListener(topics = "calculator-request-topic")
     public void handleCalculationRequest(CalculationRequest request) {
         System.out.println("Received request: " + request);
+
         BigDecimal result = switch (request.getOperation()) {
             case "sum" -> request.getA().add(request.getB());
             case "subtract" -> request.getA().subtract(request.getB());
@@ -31,6 +32,7 @@ public class CalculatorService {
             default -> null;
         };
 
+        System.out.println("Sending response: " + result);
         CalculationResponse response = new CalculationResponse(result, null);
         
         if (response.hasError()) {

@@ -16,6 +16,9 @@ public class CalculatorService {
 
     public CalculationResponse calculate(CalculationRequest request) {
         System.out.println("Sending request to calculator-request-topic: " + request);
+        System.out.println("Sending operation: " + request.getOperation());
+        System.out.println("Sending a: " + request.getA());
+        System.out.println("Sending b: " + request.getB());
         try {
             kafkaTemplate.send("calculator-request-topic", request);
             System.out.println("Request sent successfully.");
