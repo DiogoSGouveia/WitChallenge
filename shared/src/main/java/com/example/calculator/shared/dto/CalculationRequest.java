@@ -20,11 +20,9 @@ public class CalculationRequest {
     public String getOperation() {
         return operation;
     }
-    
     public BigDecimal getA() {
         return a;
     }
-
     public BigDecimal getB() {
         return b;
     }
@@ -33,11 +31,9 @@ public class CalculationRequest {
     public void setOperation(String operation) {
         this.operation = operation;
     }
-
     public void setA(BigDecimal a) {
         this.a = a;
     }
-
     public void setB(BigDecimal b) {
         this.b = b;
     }
