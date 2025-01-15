@@ -21,18 +21,17 @@ public class CalculatorService {
 
     public CalculationResponse calculate(CalculationRequest request) {
         try {
-            // Generate a unique correlation ID
             String correlationId = UUID.randomUUID().toString();
             request.setCorrelationId(correlationId);
             
-            // Create a CompletableFuture to wait for the response
+           
             CompletableFuture<CalculationResponse> future = new CompletableFuture<>();
             pendingResponses.put(correlationId, future);
 
             System.out.println("Sending request with correlationId: " + correlationId);
             kafkaTemplate.send("calculator-request-topic", request);
 
-            // Wait for the response with a timeout
+          
             return future.get(30, java.util.concurrent.TimeUnit.SECONDS);
         } catch (Exception e) {
             return new CalculationResponse(null, "Error: " + e.getMessage());

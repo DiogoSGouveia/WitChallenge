@@ -25,9 +25,9 @@ public class CalculatorService {
 
         BigDecimal result = switch (request.getOperation()) {
             case "sum" -> request.getA().add(request.getB());
-            case "subtract" -> request.getA().subtract(request.getB());
-            case "multiply" -> request.getA().multiply(request.getB());
-            case "divide" -> request.getB().compareTo(BigDecimal.ZERO) != 0 
+            case "subtraction" -> request.getA().subtract(request.getB());
+            case "multiplication" -> request.getA().multiply(request.getB());
+            case "division" -> request.getB().compareTo(BigDecimal.ZERO) != 0 
                 ? request.getA().divide(request.getB(), 10, RoundingMode.HALF_UP) 
                 : null;
             default -> null;
