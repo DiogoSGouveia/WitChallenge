@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public class CalculationResponse {
     private BigDecimal result;
     private String error;
+    
+   
     private String correlationId;
 
     public CalculationResponse() {}
@@ -39,6 +41,7 @@ public class CalculationResponse {
     public void setError(String error) {
         this.error = error;
     }
+
 
     public boolean hasError() {
         return error != null;
