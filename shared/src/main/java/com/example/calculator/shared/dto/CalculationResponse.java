@@ -1,10 +1,13 @@
 package com.example.calculator.shared.dto;
 
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CalculationResponse {
     private BigDecimal result;
     private String error;
+    
+    @JsonIgnore
     private String correlationId;
 
     public CalculationResponse() {}
@@ -40,10 +43,12 @@ public class CalculationResponse {
         this.error = error;
     }
 
+    @JsonIgnore
     public boolean hasError() {
         return error != null;
     }
 
+    @JsonIgnore
     public String getCorrelationId() {
         return correlationId;
     }

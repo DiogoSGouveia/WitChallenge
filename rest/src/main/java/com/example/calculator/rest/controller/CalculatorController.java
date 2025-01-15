@@ -42,8 +42,8 @@ public class CalculatorController {
         
         return ResponseEntity
             .ok()
-            .header("X-Request-ID", requestId)
-            .header("X-Correlation-ID", requestId)
+            .header("Request-ID", requestId)
+            .header("Correlation-ID", requestId)
             .body(response);
     }
 }
