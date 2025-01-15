@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 
 public class CalculationResponse {
     private BigDecimal result;
-    private String error;   
-   
+    private String error;
+    private String correlationId;
+
     public CalculationResponse() {}
 
     public CalculationResponse(BigDecimal result) {
@@ -41,5 +42,13 @@ public class CalculationResponse {
 
     public boolean hasError() {
         return error != null;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 } 

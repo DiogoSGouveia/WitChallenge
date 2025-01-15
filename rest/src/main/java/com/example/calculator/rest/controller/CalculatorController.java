@@ -10,43 +10,25 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.calculator.rest.service.CalculatorService;
 
 @RestController
 @RequestMapping("/api/calculator")
 public class CalculatorController {
 
+    private final CalculatorService calculatorService;
 
-    @GetMapping("/sum")
-    public ResponseEntity<Map<String, Integer>> sum(@RequestParam int a, @RequestParam int b) {
-        int result = a + b;
-        Map<String, Integer> response = new HashMap<>();
-        response.put("result", result);
+    public CalculatorController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
+    }
+
+    @GetMapping("/{operation}")
+    public ResponseEntity<CalculationResponse> calculate(@PathVariable String operation, @RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+        CalculationRequest request = new CalculationRequest(operation, a, b);
+        CalculationResponse response = calculatorService.calculate(request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/subtraction")
-    public ResponseEntity<Map<String, Integer>> subtract(@RequestParam int a, @RequestParam int b) {
-        int result = a - b;
-        Map<String, Integer> response = new HashMap<>();
-        response.put("result", result);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/multiplication")
-    public ResponseEntity<Map<String, Integer>> multiply(@RequestParam int a, @RequestParam int b) {
-        int result = a * b;
-        Map<String, Integer> response = new HashMap<>();
-        response.put("result", result);
-        return ResponseEntity.ok(response);
-    }   
-
-    @GetMapping("/division")
-    public ResponseEntity<Map<String, Integer>> divide(@RequestParam int a, @RequestParam int b) {
-        int result = a / b;
-        Map<String, Integer> response = new HashMap<>();
-        response.put("result", result);
-        return ResponseEntity.ok(response);
-    }
 
 
 }

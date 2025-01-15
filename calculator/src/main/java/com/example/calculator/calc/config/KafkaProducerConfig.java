@@ -1,6 +1,6 @@
-package com.example.calculator.rest.config;
+package com.example.calculator.calc.config;
 
-import com.example.calculator.shared.dto.CalculationRequest;
+import com.example.calculator.shared.dto.CalculationResponse;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class KafkaProducerConfig {
 
     @Bean
-    public ProducerFactory<String, CalculationRequest> producerFactory() {
+    public ProducerFactory<String, CalculationResponse> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -26,7 +26,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, CalculationRequest> kafkaTemplate() {
+    public KafkaTemplate<String, CalculationResponse> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 } 
