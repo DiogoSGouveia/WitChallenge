@@ -1,6 +1,6 @@
 package com.example.calculator.rest.controller;
 
-import com.example.calculator.rest.service.CalculatorService;
+import com.example.calculator.rest.service.RestCalculatorService;
 import com.example.calculator.rest.util.RequestTracker;
 import com.example.calculator.shared.dto.CalculationRequest;
 import com.example.calculator.shared.dto.CalculationResponse;
@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
+/*
+CalculatorController is a REST controller that provides a simple calculator API.
+It handles GET requests to perform arithmetic operations.
+*/
+
 @RestController
 @RequestMapping("/api/calculator")
-public class CalculatorController {
-    private static final Logger logger = LoggerFactory.getLogger(CalculatorController.class);
-    private final CalculatorService calculatorService;
+public class RestCalculatorController {
+    private static final Logger logger = LoggerFactory.getLogger(RestCalculatorController.class);
+    private final RestCalculatorService calculatorService;
     private final RequestTracker requestTracker;
 
-    public CalculatorController(CalculatorService calculatorService, RequestTracker requestTracker) {
+    public RestCalculatorController(RestCalculatorService calculatorService, RequestTracker requestTracker) {
         this.calculatorService = calculatorService;
         this.requestTracker = requestTracker;
     }
@@ -39,7 +44,7 @@ public class CalculatorController {
             logger.info("Processing calculation request with ID: {}", requestId);
             
             CalculationRequest request = new CalculationRequest(operation, a, b);
-            request.setCorrelationId(requestId);
+            request.setRequestId(requestId);
             
             CalculationResponse response = calculatorService.calculate(request);
 
@@ -47,7 +52,7 @@ public class CalculatorController {
             return ResponseEntity
                 .ok()
                 .header("Request-ID", requestId)
-                .header("Correlation-ID", response.getCorrelationId())
+               
                 .body(response);
         } finally {
             MdcUtil.clearRequestId();

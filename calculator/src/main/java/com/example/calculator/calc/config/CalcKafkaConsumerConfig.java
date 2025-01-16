@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 @EnableKafka
-public class KafkaConsumerConfig {
+public class CalcKafkaConsumerConfig {
     
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;

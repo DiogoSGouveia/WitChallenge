@@ -2,6 +2,11 @@ package com.example.calculator.shared.util;
 
 import org.slf4j.MDC;
 
+/*
+MdcUtil is a utility class that provides methods with setters and getters for request IDs in the MDC (Mapped Diagnostic Context).
+It is used to correlate requests and responses in the Kafka messaging system.
+*/
+
 public class MdcUtil {
     public static final String REQUEST_ID = "requestId";
     

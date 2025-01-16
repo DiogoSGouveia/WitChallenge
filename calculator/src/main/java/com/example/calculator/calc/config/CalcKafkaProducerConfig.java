@@ -1,19 +1,19 @@
-package com.example.calculator.rest.config;
+package com.example.calculator.calc.config;
 
-import com.example.calculator.shared.dto.CalculationRequest;
+import com.example.calculator.shared.dto.CalculationResponse;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
-public class KafkaProducerConfig {
+public class CalcKafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
@@ -25,7 +25,7 @@ public class KafkaProducerConfig {
     private String valueSerializer;
 
     @Bean
-    public ProducerFactory<String, CalculationRequest> producerFactory() {
+    public ProducerFactory<String, CalculationResponse> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
@@ -34,7 +34,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, CalculationRequest> kafkaTemplate() {
+    public KafkaTemplate<String, CalculationResponse> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 } 

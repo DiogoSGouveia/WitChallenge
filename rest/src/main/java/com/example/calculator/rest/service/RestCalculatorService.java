@@ -11,31 +11,36 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+CalculatorService is a service that handles the calculation requests and responses for the rest api.
+It uses Kafka to send and receive messages.
+*/
+
 @Service
-public class CalculatorService {
-    private static final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
+public class RestCalculatorService {
+    private static final Logger logger = LoggerFactory.getLogger(RestCalculatorService.class);
     private final KafkaTemplate<String, CalculationRequest> kafkaTemplate;
     private final Map<String, CompletableFuture<CalculationResponse>> pendingResponses = new ConcurrentHashMap<>();
 
-    public CalculatorService(KafkaTemplate<String, CalculationRequest> kafkaTemplate) {
+    public RestCalculatorService(KafkaTemplate<String, CalculationRequest> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     public CalculationResponse calculate(CalculationRequest request) {
         try {
-            String correlationId = request.getCorrelationId();
-            logger.info("Processing calculation request with correlationId: {}", correlationId);
+            String requestId = request.getRequestId();
+            logger.info("Processing calculation request with requestId: {}", requestId);
             logger.debug("Request details - Operation: {}, A: {}, B: {}", 
                 request.getOperation(), request.getA(), request.getB());
             
             CompletableFuture<CalculationResponse> future = new CompletableFuture<>();
-            pendingResponses.put(correlationId, future);
+            pendingResponses.put(requestId, future);
 
             kafkaTemplate.send("calculator-request-topic", request);
-            logger.info("Request sent to calculator service with correlationId: {}", correlationId);
+            logger.info("Request sent to calculator service with requestId: {}", requestId);
 
             CalculationResponse response = future.get(30, java.util.concurrent.TimeUnit.SECONDS);
-            logger.info("Received response for correlationId: {}", correlationId);
+            logger.info("Received response for requestId: {}", requestId);
             return response;
         } catch (Exception e) {
             logger.error("Error processing calculation request: {}", e.getMessage(), e);
@@ -45,29 +50,29 @@ public class CalculatorService {
 
     @KafkaListener(topics = "calculator-response-topic")
     public void handleCalculationResponse(CalculationResponse response) {
-        String correlationId = response.getCorrelationId();
-        logger.info("Received successful calculation response for correlationId: {}", correlationId);
+        String requestId = response.getRequestId();
+        logger.info("Received successful calculation response for requestId: {}", requestId);
         logger.debug("Response result: {}", response.getResult());
         
-        CompletableFuture<CalculationResponse> future = pendingResponses.remove(correlationId);
+        CompletableFuture<CalculationResponse> future = pendingResponses.remove(requestId);
         if (future != null) {
             future.complete(response);
         } else {
-            logger.warn("No pending request found for correlationId: {}", correlationId);
+            logger.warn("No pending request found for requestId: {}", requestId);
         }
     }
 
     @KafkaListener(topics = "calculator-error-topic")
     public void handleCalculationError(CalculationResponse response) {
-        String correlationId = response.getCorrelationId();
-        logger.info("Received error response for correlationId: {}", correlationId);
+        String requestId = response.getRequestId();
+        logger.info("Received error response for requestId: {}", requestId);
         logger.debug("Error details: {}", response.getError());
         
-        CompletableFuture<CalculationResponse> future = pendingResponses.remove(correlationId);
+        CompletableFuture<CalculationResponse> future = pendingResponses.remove(requestId);
         if (future != null) {
             future.complete(response);
         } else {
-            logger.warn("No pending request found for correlationId: {}", correlationId);
+            logger.warn("No pending request found for requestId: {}", requestId);
         }
     }
 }

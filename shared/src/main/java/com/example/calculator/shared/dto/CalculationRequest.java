@@ -2,11 +2,16 @@ package com.example.calculator.shared.dto;
 
 import java.math.BigDecimal;
 
+/*
+CalculationRequest is a data transfer object (DTO) that represents a request for a calculation.
+It contains the operation to be performed, the two operands, and a request ID for correlation purposes.
+*/
+
 public class CalculationRequest {
     private String operation;
     private BigDecimal a; 
     private BigDecimal b;
-    private String correlationId;
+    private String requestId;
 
     public CalculationRequest() {}
 
@@ -36,11 +41,11 @@ public class CalculationRequest {
         this.b = b;
     }
 
-    public String getCorrelationId() {
-        return correlationId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 } 

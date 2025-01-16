@@ -11,20 +11,25 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/*
+CalcCalculatorService is a service that handles the calculation requests and responses for the calculator.
+It uses Kafka to send and receive messages.
+*/
+
 @Service
-public class CalculatorService {
-    private static final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
+public class CalcCalculatorService {
+    private static final Logger logger = LoggerFactory.getLogger(CalcCalculatorService.class);
     private final KafkaTemplate<String, CalculationResponse> kafkaTemplate;
 
-    public CalculatorService(KafkaTemplate<String, CalculationResponse> kafkaTemplate) {
+    public CalcCalculatorService(KafkaTemplate<String, CalculationResponse> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
     
     @KafkaListener(topics = "calculator-request-topic")
     public void handleCalculationRequest(CalculationRequest request) {
         try {
-            MdcUtil.setRequestId(request.getCorrelationId());
-            logger.info("Received calculation request with correlationId: {}", request.getCorrelationId());
+            MdcUtil.setRequestId(request.getRequestId());
+            logger.info("Received calculation request with requestId: {}", request.getRequestId());
             
             BigDecimal result = switch (request.getOperation()) {
                 case "sum" -> request.getA().add(request.getB());
@@ -42,10 +47,10 @@ public class CalculatorService {
                 result, 
                 result == null ? "Invalid operation or division by zero" : null
             );
-            response.setCorrelationId(request.getCorrelationId());
+            response.setRequestId(request.getRequestId());
 
             String topic = response.hasError() ? "calculator-error-topic" : "calculator-response-topic";
-            logger.info("Sending response to {} for correlationId: {}", topic, response.getCorrelationId());
+            logger.info("Sending response to {} for requestId: {}", topic, response.getRequestId());
 
             try {
                 kafkaTemplate.send(topic, response);
