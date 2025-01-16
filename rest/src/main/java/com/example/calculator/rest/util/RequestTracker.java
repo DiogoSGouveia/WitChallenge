@@ -5,6 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+/*
+RequestTracker is a component that tracks the request ID for each request.
+The primary purpose is to provide a unique identifier for each request in order to link requests and responses in the Kafka messaging system.
+*/
+
 @Component
 @RequestScope
 public class RequestTracker {

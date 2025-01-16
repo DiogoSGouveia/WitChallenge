@@ -2,12 +2,17 @@ package com.example.calculator.shared.dto;
 
 import java.math.BigDecimal;
 
+/*
+CalculationResponse is a data transfer object (DTO) that represents a response to a calculation request.
+It contains the result of the calculation, an error message if the calculation failed, and a request ID for correlation purposes.
+*/
+
 public class CalculationResponse {
     private BigDecimal result;
     private String error;
     
    
-    private String correlationId;
+    private String requestId;
 
     public CalculationResponse() {}
 
@@ -47,11 +52,11 @@ public class CalculationResponse {
         return error != null;
     }
 
-    public String getCorrelationId() {
-        return correlationId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 } 
