@@ -3,7 +3,7 @@
 This project implements a distributed calculator using microservices architecture with Spring Boot and Kafka. It consists of two main services: a REST API service and a Calculator service, communicating through Kafka messages.
 
 ## Project Structure
-
+```
 WitChallenge/
 ├── calculator/ # Calculator service
 ├── rest/ # REST API service
@@ -12,7 +12,7 @@ WitChallenge/
 │ ├── calculator/ # Calculator service logs
 │ └── rest/ # REST service logs
 └── docker-compose.yml
-
+```
 ## Prerequisites
 
 - Java 21 or higher
@@ -23,28 +23,28 @@ WitChallenge/
 ## Building the Project
 
 1. Clone the repository:
-
-- git clone <repository-url>
-- cd WitChallenge
-
+```
+git clone <repository-url>
+cd WitChallenge
+```
 2. Build the Project using Gradle:
-
-- ./gradlew clean build
-
+```
+./gradlew clean build
+```
 3. Build the Docker compose:
-
-- docker-compose build
-
+```
+docker-compose build
+```
 ## Run the Application:
 
 1. Start all services using Docker Compose:
-
-- docker-compose up -d
-
+```
+docker-compose up -d
+```
 2. Verify that all services are running:
-
-- docker-compose ps
-
+```
+docker-compose ps
+```
 ## Testing the Calculator
 
 You can use Postman to test the calculator.
@@ -71,7 +71,7 @@ You can use Postman to test the calculator.
 2. The response should be a JSON object with the result of the division.
 
 ### Example Response
-
+```
 HTTP/1.1 200 OK
 Content-Type: application/json
 Request-ID: 550e8400-e29b-41d4-a716-446655440000
@@ -79,6 +79,7 @@ Request-ID: 550e8400-e29b-41d4-a716-446655440000
 "result": 3,
 "error": null
 }
+```
 
 ## Logging
 
@@ -87,9 +88,9 @@ The project uses Logback for logging. The logs are stored in the logs/ directory
 ## Stopping the Application
 
 To stop all services:
-
-- docker-compose down
-
+```
+docker-compose down
+```
 ## Features
 
 - Distributed calculator using microservices
